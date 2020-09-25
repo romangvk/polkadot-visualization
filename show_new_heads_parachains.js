@@ -14,7 +14,9 @@ const{ ApiPromise, WsProvider } = require('@polkadot/api');
     // const allChains = await api.query.parachains.heads();
     // console.log(allChains);
 
-    const parachainIDS = [5000, 100, 5001, 120, 8000, 110, 3000, 1000]
+    const parachainIDS = await api.query.registrar.parachains();
+    // [5000, 100, 5001, 120, 8000, 110, 3000, 1000]
+
     parachainIDS.forEach(async (id)=>{
         await api.query.parachains.heads(id, (head)=>{
             console.log("Parachain with ID: " + id + " new head: " + head.toHuman() + "\n");
