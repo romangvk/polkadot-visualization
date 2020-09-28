@@ -1,6 +1,7 @@
 // const{ ApiPromise, WsProvider } = require('@polkadot/api');
 
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise, WsProvider} from '@polkadot/api';
+// import { WsProvider } from '@polkadot/api';
 
 // import Api from '/node_modules/@polkadot/api/promise';
 // import Ws from '/node_modules/@polkadot/rpc-provider/ws';
@@ -67,4 +68,4 @@ async function update_parachain_heads(api) {
     });
 }
 
-main()
+// main()
