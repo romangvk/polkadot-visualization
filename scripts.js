@@ -1,6 +1,6 @@
 // const{ ApiPromise, WsProvider } = require('@polkadot/api');
 
-import { ApiPromise, WsProvider} from '@polkadot/api';
+import { ApiPromise, WsProvider } from '@polkadot/api';
 // import { WsProvider } from '@polkadot/api';
 
 // import Api from '/node_modules/@polkadot/api/promise';
@@ -23,6 +23,10 @@ app.listen(port, () => {
 })
 
 */
+
+function showMessage(){
+    
+}
 
 
 async function main() {
@@ -61,11 +65,11 @@ async function update_parachain_heads(api) {
 
     parachainIDS.forEach(async (id)=>{
         await api.query.parachains.heads(id, (head)=>{
-            elem = document.getElementById('event_updates_content');
-            elem.innerText = elem.innerText + "Parachain with ID: " + id + " new head: " + head.toHuman() + "\n";
+            // elem = document.getElementById('event_updates_content');
+            // elem.innerText = elem.innerText + "Parachain with ID: " + id + " new head: " + head.toHuman() + "\n";
             console.log("Parachain with ID " + id + " - New Head: " + head.toHuman().substring(0, 20) + "...\n");
         });
     });
 }
 
-// main()
+main()

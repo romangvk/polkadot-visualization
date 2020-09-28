@@ -34,8 +34,14 @@
         <div class="d-none d-md-block col col-md-9">
             <div class="row">
                 <div class="col">
-                    <button onclick="showMessage()">Click me to show message send animation!</button>
-                    <div id="messageAnimation"></div>
+                    <button id="button1" onclick="showMessage()">Click me to show message send animation!</button>
+                    <div id="messageAnimation">
+                        <svg height="300" width="800">
+                            <circle cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
+                            <circle cx="350" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
+                            <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" />
+                        </svg>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -44,7 +50,7 @@
                     <div id="newBlockAnimation"></div>
                 </div>
             </div>
-            <!-- <svg version="1.1" id="Relay_and_Parachains" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 850.39 425.2" style="enable-background:new 0 0 850.39 425.2;" xml:space="preserve">
+            <svg version="1.1" id="Relay_and_Parachains" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 850.39 425.2" style="enable-background:new 0 0 850.39 425.2;" xml:space="preserve">
                 <style type="text/css">
                   .st0{fill:#6D7278;}
                   .st1{fill:none;stroke:#000000;stroke-width:0.35;stroke-miterlimit:10;}
@@ -342,7 +348,7 @@
                     </g>
                   </g>
                 </g>
-            </svg> -->
+            </svg>
         </div>
         <div class="col col-md-3">
           <div id="event_updates">
