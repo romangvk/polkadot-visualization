@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <script type='module' src='scripts.js'></script>
     <link rel="stylesheet" href="static/styles.css">
     
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300|Open+Sans:300&display=swap" rel="stylesheet">
@@ -36,10 +35,11 @@
                 <div class="col">
                     <button id="button1" onclick="showMessage()">Click me to show message send animation!</button>
                     <div id="messageAnimation">
-                        <svg height="300" width="800">
+                        <svg id="message_svg" height="300" width="800">
                             <circle cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
                             <circle cx="350" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
-                            <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" />
+                            <path id="path3" d="M75 125 L325 125 Z" stroke="black" stroke-width="3" />
+                            <!-- <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" /> -->
                         </svg>
                     </div>
                 </div>
@@ -47,10 +47,17 @@
             <div class="row">
                 <div class="col">
                     <button onclick="showNewBlock()">Click me to show new block animation!</button>
-                    <div id="newBlockAnimation"></div>
+                    <div id="newBlockAnimation">
+                        <svg id="block_svg" height="300" width="800">
+                            <circle id="left_circle" cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
+                            <circle cx="350" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
+                            <!-- <path id="path3" d="M75 125 L325 125 Z" stroke="black" stroke-width="3" /> -->
+                            <!-- <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" /> -->
+                        </svg>
+                    </div>
                 </div>
             </div>
-            <svg version="1.1" id="Relay_and_Parachains" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 850.39 425.2" style="enable-background:new 0 0 850.39 425.2;" xml:space="preserve">
+            <!-- <svg version="1.1" id="Relay_and_Parachains" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 850.39 425.2" style="enable-background:new 0 0 850.39 425.2;" xml:space="preserve">
                 <style type="text/css">
                   .st0{fill:#6D7278;}
                   .st1{fill:none;stroke:#000000;stroke-width:0.35;stroke-miterlimit:10;}
@@ -348,7 +355,7 @@
                     </g>
                   </g>
                 </g>
-            </svg>
+            </svg> -->
         </div>
         <div class="col col-md-3">
           <div id="event_updates">
@@ -364,6 +371,8 @@
 
     
   </body>
+    <script src="node_modules/animejs/lib/anime.min.js"></script>
+    <script src='scripts.js'></script>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

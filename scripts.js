@@ -1,6 +1,6 @@
 // const{ ApiPromise, WsProvider } = require('@polkadot/api');
 
-import { ApiPromise, WsProvider } from '@polkadot/api';
+// import { ApiPromise, WsProvider } from '@polkadot/api';
 // import { WsProvider } from '@polkadot/api';
 
 // import Api from '/node_modules/@polkadot/api/promise';
@@ -23,14 +23,34 @@ app.listen(port, () => {
 })
 
 */
-
+var path = '#path3'
 function showMessage(){
-    
+    console.log("animating!");
+    anime({
+        targets: '#message_svg ' + path,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'steps(30)',
+        duration: 5000,
+        // direction: 'alternate',
+        // loop: true
+    })
+}
+
+
+circle_to_animate = '#left_circle';
+
+function showNewBlock(){
+    console.log("animating the bottom left circle");
+    anime({
+        targets: '#block_svg ' + circle_to_animate,
+        scale: .5,
+        duration: 1000,
+        direction: 'alternate',
+    })
 }
 
 
 async function main() {
-
     const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
     const api = await ApiPromise.create({ provider });
     const chain = await api.rpc.system.chain();
