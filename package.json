@@ -4,9 +4,8 @@
   "description": "",
   "main": "./static/index.html",
   "scripts": {
-    "start": "npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "lite-server"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +18,22 @@
   },
   "homepage": "https://github.com/romangvk/polkadot-visualization#readme",
   "dependencies": {
+
     "@polkadot/api": "^1.35.0-beta.19",
     "animejs": "^3.2.0",
     "express": "^4.17.1",
     "lite-server": "^2.5.4",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "@polkadot/api": "^1.35.0-beta.5",
+    "animejs": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
     "polkadot": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-preset-latest": "^6.24.1"
   }
 }
