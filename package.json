@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node api.js"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "@babel/preset-env": "^7.11.5",
     "@polkadot/api": "^1.35.0-beta.5",
     "animejs": "^3.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "polkadot": "^1.0.0"
