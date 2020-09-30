@@ -24,50 +24,56 @@ app.listen(port, () => {
 
 */
 
+function animatePathFrom(from_id, length){
+    anime({
+        targets: '#path_id_' + from_id,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'linear',
+        duration: length,
+        // direction: 'alternate',
+        // loop: true
+    });
+}
+
+function animatePathTo(to_id, length){
+    anime({
+        targets: '#path_id_' + to_id,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'linear',
+        duration: length,
+        delay: length,
+        direction: 'reverse',
+        // loop: true
+    });
+}
+
+
 function sendMessage() {
     from_id = document.getElementById('from_chain').value;
     to_id = document.getElementById('to_chain').value;
     console.log("Animating sending a message from " + from_id + " to " + to_id);
-    for(i=0; i<3; i++){
-        anime({
-            targets: '#path_id_' + from_id,
-            strokeDashoffset: [anime.setDashoffset, 0],
-            easing: 'linear',
-            duration: 4000,
-            // direction: 'alternate',
-            // loop: true
-        })
-        anime({
-            targets: '#path_id_' + to_id,
-            strokeDashoffset: [anime.setDashoffset, 0],
-            easing: 'linear',
-            duration: 4000,
-            delay: 4000,
-            direction: 'reverse'
-            // loop: true
-        })
-    }
-    setTimeout(() => {generateCircles()}, 2000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
+    animatePathFrom(from_id, 4000);
+    animatePathTo(to_id, 4000);
+    setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
-function generateCircles(){
-    console.log("Generating circles.");
+function generateChains(){
+    console.log("Generating parachains.");
     elem = document.getElementById('message_svg');
     number = document.getElementById('num_chains').value;
     angleBetween = (360/number)*(Math.PI/180);
-    centerX = 400;
-    centerY = 400;
+    centerX = 350;
+    centerY = 350;
+    offsetX = 150;
     text = "";
     for(var i=0; i<number; i++){
-        thisX = centerX + Math.cos(angleBetween*i)*325;
-        //50 + i*30;// x position for the ith circle
-        thisY = centerY + Math.sin(angleBetween*i)*325;
-        //40 + i*30;// y position for the ith circle
-        text += "<circle id='circle_id_" + i + "' cx='" + thisX + "' cy='" + thisY + "' r='40' stroke='black' stroke-width='3' fill='#EEEEEE' />\n";
-        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + "L400 400 Z' stroke='black' stroke-width='3' />\n";
+        thisX = offsetX + centerX + Math.cos(angleBetween*i)*(centerX*.8);
+        thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
+        text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#CCCCCC' />\n";
+        text += "<rect id='chain_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
+        // text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + "L400 400 Z' stroke='black' stroke-width='3' />\n";
+        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='3' />\n";
         text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + i + "</text>";
-        //<!-- <path id="path3" d="M75 125 L325 125 Z" stroke="black" stroke-width="3" /> -->
-        //<circle id="left_circle" cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
     }
     console.log(text);
     elem.innerHTML = text;

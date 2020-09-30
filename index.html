@@ -35,18 +35,15 @@
                 <div class="col">
                     <label for="num_chains">Number of Parachains:</label>
                     <input type="number" id="num_chains" name="num_chains">
-                    <button class="btn btn-primary btn-sm" id="generateCircles" onclick="generateCircles()">Generate Circles</button><br>
+                    <button class="btn btn-primary btn-sm" id="generateChains" onclick="generateChains()">Generate Parachains</button>
                     <label for="from_chain">From:</label>
                     <input type="number" id="from_chain" name="from_chain">
                     <label for="to_chain">To:</label>
                     <input type="number" id="to_chain" name="to_chain">
                     <button class="btn btn-primary btn-sm" id="sendMessage" onclick="sendMessage()">Animate Sending Message</button>
                     <div id="messageAnimation">
-                        <svg id="message_svg" height="800" width="800">
-                            <!-- <circle cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
-                            <circle cx="350" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
-                            <path id="path_1" d="M90 125 L310 125 Z" stroke="black" stroke-width="3" />
-                            <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" /> -->
+                        <svg class="border" id="message_svg" height="700" width="1000">
+                            <!-- This is where the relaychain and parachains are drawn -->
                         </svg>
                     </div>
                 </div>
