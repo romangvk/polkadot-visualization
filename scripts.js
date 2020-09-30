@@ -7,22 +7,6 @@
 // import Ws from '/node_modules/@polkadot/rpc-provider/ws';
 
 
-/* I had just started trying to use express js to display the website, but didn't get very far so I'm commenting this out
-
-var express = require('express');
-const path = require('path');
-var app = express();
-var port = 3000;
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
-
-*/
 
 function animatePathFrom(from_id, length){
     anime({
