@@ -16,6 +16,6 @@ app.get('/parachains', (req, res) => {
     });
 });
 
-app.listen(process.env.PORT, () =>
-    console.log(`Polkadot API Server listening on port ${process.env.PORT}!`),
-);
+app.listen(process.env.PORT, () => {
+    console.log(`Polkadot API Server listening on port ${process.env.PORT}!`);
+});
