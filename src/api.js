@@ -7,7 +7,10 @@ const ids = [5000, 100, 5001, 120, 8000, 110, 3000, 1000];
 
 
 const api = {
+    // test method to ensure api is working
     test: () => 'ok',
+
+    // return all parachains on relay at uri
     getParachains: (parachainIDs = ids) => {
         return new Promise((resolve, reject) => {
             let provider = new WsProvider(uri);
