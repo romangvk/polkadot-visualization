@@ -5,7 +5,7 @@
   "main": "./static/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon --exec babel-node src/api/server.js",
     "dev": "lite-server"
   },
   "repository": {
