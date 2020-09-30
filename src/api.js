@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
+const uri = process.env.URI;
 
-const uri = 'wss://rococo-rpc.polkadot.io/';
 const ids = [5000, 100, 5001, 120, 8000, 110, 3000, 1000];
+
 
 const api = {
     test: () => 'ok',
@@ -22,10 +24,14 @@ const api = {
 
                     Promise.all(headRequests).then((heads) => {
                         let response = {};
-                        response.heads = heads;
-                        heads.forEach(head => {
-                            console.log("Parachain with ID: " + 'h' + " new head: " + head.toHuman() + "\n");
-                        })
+                        response.parachains = [];
+                        for(let i = 0; i < headRequests.length; i++) {
+                            response.parachains.push({
+                                id: parachainIDs[i],
+                                head: heads[i]
+                            });
+                            console.log('Parachain with ID: ' + parachainIDs[i] + ' new head:' + heads[i] + '\n');
+                        }
                         resolve(response);
                     }).catch((e) => {
                         console.log(e);
