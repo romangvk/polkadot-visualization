@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   async getParachains() {
+    console.log('hey');
     const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
     const api = await ApiPromise.ApiPromise.create({ provider });
     const chain = await api.rpc.system.chain();
@@ -34,7 +35,6 @@ export class AppComponent implements OnInit {
       await api.query.parachains.heads(id, (head) => {
         output += "Parachain with ID: " + id + " new head: " + head.toHuman() + "\n";
       });
-    });
-    
+    });    
   }
 }
