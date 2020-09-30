@@ -50,11 +50,13 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button onclick="showNewBlock()">Click me to show new block animation!</button>
+                    <button class="btn btn-primary btn-sm" onclick="showNewBlock()">Click me to show new block animation!</button>
                     <div id="newBlockAnimation">
-                        <svg id="block_svg" height="300" width="800">
-                            <circle id="left_circle" cx="50" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
-                            <circle cx="350" cy="125" r="40" stroke="black" stroke-width="3" fill="red" />
+                        <svg id="block_svg" height="150" width="800">
+                            <g id="left_circle" scale="">
+                              <rect x="50" y="25" rx="10" ry="10" height="60" width=60 fill="#CCCCCC" />
+                              <rect x="67" y="41" rx="5" ry="5" height="24" width="24" fill="#FFFFFF" />
+                            </g>
                             <!-- <path id="path3" d="M75 125 L325 125 Z" stroke="black" stroke-width="3" /> -->
                             <!-- <line x1="75" y1="125" x2="325" y2="125" style="stroke:rgb(0,0,0);stroke-width:4" /> -->
                         </svg>

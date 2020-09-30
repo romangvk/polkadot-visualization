@@ -69,10 +69,9 @@ function generateChains(){
     for(var i=0; i<number; i++){
         thisX = offsetX + centerX + Math.cos(angleBetween*i)*(centerX*.8);
         thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
-        text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#CCCCCC' />\n";
+        text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
         text += "<rect id='chain_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-        // text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + "L400 400 Z' stroke='black' stroke-width='3' />\n";
-        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='3' />\n";
+        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + i + "</text>";
     }
     console.log(text);
