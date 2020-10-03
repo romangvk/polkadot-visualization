@@ -9,12 +9,30 @@ app.get('/', (req, res) => {
     return res.send(polkadotApi.test());
 });
 
-app.get('/parachains', (req, res) => {
+app.get('/getParachains', (req, res) => {
     polkadotApi.getParachains().then((response) => {
         return res.send(response);
     }).catch((e) => {
         return res.send(e);
     });
+});
+
+app.get('/getParachainIDs', (req, res) => {
+  polkadotApi.getParachainIDs().then((response) => {
+      return res.send(response);
+  }).catch((e) => {
+      return res.send(e);
+  });
+});
+
+app.get('/loadAPI', (req, res) => {
+  polkadotApi.loadAPI().then((response) => {
+      console.log("API loaded");
+      return res.send(response);
+  }).catch((e) => {
+      console.log("API NOT loaded");
+      return res.send(e);
+  });
 });
 
 app.listen(process.env.PORT, () => {

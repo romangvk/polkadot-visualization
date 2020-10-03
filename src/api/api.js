@@ -20,14 +20,16 @@ export default class API {
     loadAPI() {
         return new Promise((resolve, reject) => {
             let provider = new WsProvider(uri);
+            console.log(provider);
             ApiPromise.create({ provider }).then((r) => {
                 this.papi = r;
-                let chain;
-                papi.rpc.system.chain().then((r) => {
-                    chain = r;
-                }).catch((e) => { reject(e); });
-                resolve(`Connected to ${chain} at ${uri}`, chain, uri);
-            }).catch((e) => { reject(e); });
+                this.papi.rpc.system.chain().then((r) => {
+
+                    resolve(`Connected to ${r} at ${uri}`, r, uri);
+
+                }).catch((e) => { console.log("first catch block"); reject(e); });
+
+            }).catch((e) => { console.log("second catch block"); console.log(e); reject(e); });
         });
     }
 
@@ -35,8 +37,9 @@ export default class API {
     getParachainIDs() {
         return new Promise((resolve, reject) => {
             if (this.papi == null) reject("API not loaded. Call loadAPI() before calling another function.");
-            papi.query.registrar.parachains().then((r) => {
+            this.papi.query.registrar.parachains().then((r) => {
                 this.ids = r;
+                console.log(this.ids);
                 resolve(r);
             }).catch((e) => { reject(e); })
         });
@@ -47,14 +50,18 @@ export default class API {
         return new Promise((resolve, reject) => {
             if (this.papi == null) reject("API not loaded. Call loadAPI() before calling another function.");
             let headRequests = [];
+            console.log("before promise.all");
+            console.log(this.ids.length);
             if (this.ids.length == 0) { reject('No parachain ids.'); }
             this.ids.forEach(id => {
+                console.log(id);
                 headRequests.push(papi.query.parachains.heads(id));
             });
 
             Promise.all(headRequests).then((heads) => {
                 let response = {};
                 response.parachains = [];
+                console.log(headRequests.length);
                 for (let i = 0; i < headRequests.length; i++) {
                     response.parachains.push({
                         id: this.ids[i],
