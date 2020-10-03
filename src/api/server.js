@@ -3,13 +3,14 @@ import express from 'express';
 import api from './api';
 
 const app = express();
+const polkadotApi = new api();
 
 app.get('/', (req, res) => {
-    return res.send(api.test());
+    return res.send(polkadotApi.test());
 });
 
 app.get('/parachains', (req, res) => {
-    api.getParachains().then((response) => {
+    polkadotApi.getParachains().then((response) => {
         return res.send(response);
     }).catch((e) => {
         return res.send(e);

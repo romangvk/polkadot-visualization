@@ -3,14 +3,21 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 
 const uri = process.env.URI;
 
-const api = {
-    papi: null,
-    ids: []],
+export default class API {
+    API() {
+        console.log("loaded API class")
+    }
+
+    papi = null;
+    ids = [];
+    testMessage = 'ok';
 
     // test method to ensure api is working
-    test: () => 'ok',
+    test() {
+        return (this.testMessage);
+    }
 
-    loadAPI: () => {
+    loadAPI() {
         return new Promise((resolve, reject) => {
             let provider = new WsProvider(uri);
             ApiPromise.create({ provider }).then((r) => {
@@ -22,23 +29,23 @@ const api = {
                 resolve(`Connected to ${chain} at ${uri}`, chain, uri);
             }).catch((e) => { reject(e); });
         });
-    },
+    }
 
     // save parachain ids in ids
-    getParachainIDs: () => {
-        if (this.papi == null) return "API not loaded. Call loadAPI() before calling another function.";
+    getParachainIDs() {
         return new Promise((resolve, reject) => {
+            if (this.papi == null) reject("API not loaded. Call loadAPI() before calling another function.");
             papi.query.registrar.parachains().then((r) => {
                 this.ids = r;
                 resolve(r);
             }).catch((e) => { reject(e); })
         });
-    },
+    }
 
     // return all parachains on relay
-    getParachains: () => {
-        if (this.papi == null) return "API not loaded. Call loadAPI() before calling another function.";
+    getParachains() {
         return new Promise((resolve, reject) => {
+            if (this.papi == null) reject("API not loaded. Call loadAPI() before calling another function.");
             let headRequests = [];
             if (this.ids.length == 0) { reject('No parachain ids.'); }
             this.ids.forEach(id => {
@@ -64,4 +71,3 @@ const api = {
         });
     }
 }
-export default api;
