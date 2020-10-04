@@ -27,10 +27,8 @@ app.get('/getParachainIDs', (req, res) => {
 
 app.get('/loadAPI', (req, res) => {
   polkadotApi.loadAPI().then((response) => {
-      console.log("API loaded");
       return res.send(response);
   }).catch((e) => {
-      console.log("API NOT loaded");
       return res.send(e);
   });
 });
