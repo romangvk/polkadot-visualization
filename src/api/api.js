@@ -3,46 +3,63 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 
 const uri = process.env.URI;
 
-const ids = [5000, 100, 5001, 120, 8000, 110, 3000, 1000];
+export default class API {
+    papi = null;
+    ids = null;
+    testMessage = 'ok';
 
-
-const api = {
     // test method to ensure api is working
-    test: () => 'ok',
+    test() {
+        return (this.testMessage);
+    }
 
-    // return all parachains on relay at uri
-    getParachains: (parachainIDs = ids) => {
+    loadAPI() {
         return new Promise((resolve, reject) => {
             let provider = new WsProvider(uri);
             ApiPromise.create({ provider }).then((r) => {
-                let papi = r;
-                papi.rpc.system.chain().then((r) => {
-                    let chain = r;
-                    console.log(`Connected to ${chain}!`);
-
-                    let headRequests = [];
-                    parachainIDs.forEach(id => {
-                        headRequests.push(papi.query.parachains.heads(id));
-                    });
-
-                    Promise.all(headRequests).then((heads) => {
-                        let response = {};
-                        response.parachains = [];
-                        for(let i = 0; i < headRequests.length; i++) {
-                            response.parachains.push({
-                                id: parachainIDs[i],
-                                head: heads[i]
-                            });
-                            console.log('Parachain with ID: ' + parachainIDs[i] + ' new head:' + heads[i] + '\n');
-                        }
-                        resolve(response);
-                    }).catch((e) => {
-                        console.log(e);
-                        reject(e);
-                    });
+                this.papi = r;
+                this.papi.rpc.system.chain().then((r) => {
+                    resolve(`Connected to ${r} at ${uri}`, r, uri);
                 }).catch((e) => { reject(e); });
             }).catch((e) => { reject(e); });
-        })
+        });
+    }
+
+    // save parachain ids in this.ids
+    getParachainIDs() {
+        return new Promise((resolve, reject) => {
+            if (this.papi == null) reject('API not loaded. Call loadAPI() before calling another function.');
+            this.papi.query.registrar.parachains().then((r) => {
+                this.ids = r;
+                resolve({ ids: r });
+            }).catch((e) => { reject(e); })
+        });
+    }
+
+    // return all parachains on relay
+    getParachains() {
+        return new Promise((resolve, reject) => {
+            if (this.papi == null) reject('API not loaded. Call loadAPI() before calling another function.');
+            let headRequests = [];
+            if (this.ids == null || this.ids.length == 0) { reject('No parachain ids.'); }
+            this.ids.forEach(id => {
+                headRequests.push(this.papi.query.parachains.heads(id));
+            });
+            Promise.all(headRequests).then((heads) => {
+                let response = {};
+                response.parachains = [];
+                for (let i = 0; i < headRequests.length; i++) {
+                    response.parachains.push({
+                        id: this.ids[i],
+                        head: heads[i]
+                    });
+                    console.log('Parachain with ID: ' + this.ids[i] + ' new head:' + heads[i] + '\n');
+                }
+                resolve(response);
+            }).catch((e) => {
+                // Parachain head request failed
+                reject(e);
+            });
+        });
     }
 }
-export default api;
