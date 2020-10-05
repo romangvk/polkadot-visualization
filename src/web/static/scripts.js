@@ -9,6 +9,10 @@
 
 
 function animatePathFrom(from_id, length){
+    elem = document.getElementById('chain_id_' + from_id);   
+    elem2 = document.getElementById('path_id_' + from_id);   
+    elem.setAttribute('fill', '#00BB00');
+    elem2.setAttribute('stroke', '#00BB00');
     anime({
         targets: '#path_id_' + from_id,
         strokeDashoffset: [anime.setDashoffset, 0],
@@ -20,6 +24,10 @@ function animatePathFrom(from_id, length){
 }
 
 function animatePathTo(to_id, length){
+    elem = document.getElementById('chain_id_' + to_id);   
+    elem2 = document.getElementById('path_id_' + to_id);   
+    elem.setAttribute('fill', '#00BB00');
+    elem2.setAttribute('stroke', '#00BB00');
     anime({
         targets: '#path_id_' + to_id,
         strokeDashoffset: [anime.setDashoffset, 0],
@@ -41,6 +49,13 @@ function sendMessage() {
     setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
+function changeColor() {
+    elem = document.getElementById('chain_id_0');
+    // text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
+    elem.setAttribute('fill', '#00BB00');
+
+}
+
 function generateChains(){
     console.log("Generating parachains.");
     elem = document.getElementById('message_svg');
@@ -58,7 +73,7 @@ function generateChains(){
         text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + i + "</text>";
     }
-    text += "<circle cx='" + (centerX+offsetX) + "' cy='" + centerY + "' r='120' fill='white' stroke-width='40' stroke='#777777' />";
+    text += "<circle cx='" + (centerX+offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
     console.log(text);
     elem.innerHTML = text;
 }
