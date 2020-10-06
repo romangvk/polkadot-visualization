@@ -7,6 +7,48 @@
 // import Ws from '/node_modules/@polkadot/rpc-provider/ws';
 
 
+function createXmlHttp() {
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    if (!(xmlhttp)) {
+        alert("Your browser does not support AJAX!");
+    }
+    return xmlhttp;
+}
+
+function get(xmlHttp, target) {
+    if (xmlHttp) {
+        xmlHttp.open("GET", target, true); // XMLHttpRequest.open(method, url, async)
+        var contentType = "application/x-www-form-urlencoded";
+        xmlHttp.setRequestHeader("Content-type", contentType);
+        xmlHttp.send();
+    }
+}
+
+function sendGetRequest(targetUrl, callbackFunction) {
+    var xmlHttp = createXmlHttp();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+            var myObject = JSON.parse(xmlHttp.responseText);
+            callbackFunction(myObject, targetUrl);
+        }
+    }
+    get(xmlHttp, targetUrl)
+}
+
+function show_chains(result, url) {
+    elem = Html.getElementById('event_updates_content');
+    elem.innerText = result;
+}
+
+function updateContent(){
+    sendGetRequest('localhost:3000/parachains', show_chains);  
+
+}
 
 function animatePathFrom(from_id, length){
     elem = document.getElementById('chain_id_' + from_id);   
