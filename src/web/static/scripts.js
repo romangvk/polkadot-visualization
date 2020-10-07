@@ -44,32 +44,33 @@ function sendGetRequest(targetUrl, callbackFunction) {
 function show_chains(result, url) {
     console.log(result);
     elem = document.getElementById('event_updates_content');
-    elem.innerText = result.message;
+    oldText = elem.innerText;
+    elem.innerText = result.response + oldText;
 }
 
 function updateContent(){
-    sendGetRequest('http://localhost:3000', show_chains);  
-    // fetch('http://localhost:3000')
-    //   .then(
-    //     function(response) {
-    //         console.log(response);
-    //       if (response.status !== 200) {
-    //         console.log('Looks like there was a problem. Status Code: ' +
-    //           response.status);
-    //         return;
-    //       }
+    // sendGetRequest('http://localhost:3000/loadAPI', show_chains);  
+    fetch('http://localhost:3000/loadAPI')
+      .then(
+        function(response) {
+            console.log(response);
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+              response.status);
+            return;
+          }
 
-    //       // Examine the text in the response
-    //       response.json().then(function(data) {
-    //         console.log(data);
-    //       }).catch((e) => {
-    //         console.log(e);
-    //       });
-    //     }
-    //   )
-    //   .catch(function(err) {
-    //     console.log('Fetch Error :-S', err);
-    //   });
+          // Examine the text in the response
+          response.json().then(function(data) {
+            console.log(data);
+          }).catch((e) => {
+            console.log(e);
+          });
+        }
+      )
+      .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      });
 }
 
 function animatePathFrom(from_id, length){
