@@ -46,7 +46,7 @@ function show_chains(result, url) {
 }
 
 function updateContent(){
-    sendGetRequest('localhost:3000/parachains', show_chains);  
+    sendGetRequest('http://localhost:3000/', show_chains);  
 
 }
 
