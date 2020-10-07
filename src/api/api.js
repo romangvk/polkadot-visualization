@@ -3,14 +3,18 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 
 const uri = process.env.URI;
 
+
+
 export default class API {
     papi = null;
     ids = null;
     testMessage = 'ok';
 
+
+
     // test method to ensure api is working
     test() {
-        return (this.testMessage);
+        return ({'message': this.testMessage});
     }
 
     loadAPI() {

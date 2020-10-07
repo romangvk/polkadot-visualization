@@ -33,6 +33,7 @@ function sendGetRequest(targetUrl, callbackFunction) {
     var xmlHttp = createXmlHttp();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4) {
+            console.log(xmlHttp);
             var myObject = JSON.parse(xmlHttp.responseText);
             callbackFunction(myObject, targetUrl);
         }
@@ -41,13 +42,34 @@ function sendGetRequest(targetUrl, callbackFunction) {
 }
 
 function show_chains(result, url) {
-    elem = Html.getElementById('event_updates_content');
-    elem.innerText = result;
+    console.log(result);
+    elem = document.getElementById('event_updates_content');
+    elem.innerText = result.message;
 }
 
 function updateContent(){
-    sendGetRequest('http://localhost:3000/', show_chains);  
+    sendGetRequest('http://localhost:3000', show_chains);  
+    // fetch('http://localhost:3000')
+    //   .then(
+    //     function(response) {
+    //         console.log(response);
+    //       if (response.status !== 200) {
+    //         console.log('Looks like there was a problem. Status Code: ' +
+    //           response.status);
+    //         return;
+    //       }
 
+    //       // Examine the text in the response
+    //       response.json().then(function(data) {
+    //         console.log(data);
+    //       }).catch((e) => {
+    //         console.log(e);
+    //       });
+    //     }
+    //   )
+    //   .catch(function(err) {
+    //     console.log('Fetch Error :-S', err);
+    //   });
 }
 
 function animatePathFrom(from_id, length){
@@ -89,13 +111,6 @@ function sendMessage() {
     animatePathFrom(from_id, 4000);
     animatePathTo(to_id, 4000);
     setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
-}
-
-function changeColor() {
-    elem = document.getElementById('chain_id_0');
-    // text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
-    elem.setAttribute('fill', '#00BB00');
-
 }
 
 function generateChains(){
