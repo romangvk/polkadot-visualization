@@ -33,6 +33,18 @@ app.get('/loadAPI', (req, res) => {
     });
 });
 
+app.get('/subscribeToEvents', (req, res) => {
+    polkadotApi.subscribeToNewHeads().then((response) => {
+        return res.send({ response: response });
+    }).catch((e) => {
+        return res.send(e);
+    });
+});
+
+app.get('/latestEvents', (req, res) => {
+    return res.send({ response: polkadotApi.popHeads() });
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Polkadot API Server listening on port ${process.env.PORT}!`);
 });
