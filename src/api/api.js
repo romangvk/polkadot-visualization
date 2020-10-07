@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { response } from 'express';
 
 const uri = process.env.URI;
 
@@ -65,5 +66,21 @@ export default class API {
                 reject(e);
             });
         });
+    }
+
+    heads = []
+
+    async subscribeToNewHeads() {
+        const block_unsub = await this.papi.rpc.chain.subscribeNewHeads((block) => {
+            console.log("New block: " + block.number + "\n");
+            this.heads.push(block);
+        })
+        return "Subscribed to new events.";
+    }
+
+    popHeads() {
+        let copy = this.heads;
+        this.heads = [];
+        return { heads: copy };
     }
 }
