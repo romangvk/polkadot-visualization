@@ -25,9 +25,11 @@ function animatePathFrom(from_id, length){
 
 function animatePathTo(to_id, length){
     elem = document.getElementById('chain_id_' + to_id);   
-    elem2 = document.getElementById('path_id_' + to_id);   
+    elem2 = document.getElementById('path_id_' + to_id); 
+    elem3 = document.getElementById('path_under_id_' + to_id);     
     elem.setAttribute('fill', '#00BB00');
-    elem2.setAttribute('stroke', '#00BB00');
+    elem2.setAttribute('stroke', '#000000');
+    elem3.setAttribute('stroke', '#00BB00');
     anime({
         targets: '#path_id_' + to_id,
         strokeDashoffset: [anime.setDashoffset, 0],
