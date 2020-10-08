@@ -41,7 +41,70 @@ function sendGetRequest(targetUrl, callbackFunction) {
     get(xmlHttp, targetUrl)
 }
 
-function show_chains(result, url) {
+
+function initServer() {
+    fetch('http://localhost:3000/loadAPI')
+        .then(
+            function(response) {
+                console.log(response);
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                // Examine the text in the response
+                response.json().then(function(data) {
+                    console.log(data);
+                    elem = document.getElementById('event_updates_content');
+                    oldText = elem.innerText;
+                    elem.innerText = data.response + "\n\n" + oldText;
+                    initImage();
+                    initSidebar();
+
+                }).catch((e) => {
+                    console.log(e);
+                });
+            }
+        ).catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+
+}
+
+function initImage() {
+    fetch('http://localhost:3000/getParachainIDs').then(
+        function(response) {
+            console.log(response);
+            if(response.status !== 200) { 
+                console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+                return;
+            }
+            response.json().then(function(data){
+                console.log(data);
+                chains_array = data.response.ids;
+                num_chains = chains_array.length;
+                elem = document.getElementById('event_updates_content');
+                oldText = elem.innerText;
+                elem.innerText = "Parachain IDs:\n[" + chains_array + "]\n\n" + oldText;
+                generateChains();
+            }).catch((e) => {
+                console.log(e);
+            });
+
+        }).catch((e) => {
+            console.log(e);
+        });
+}
+
+function initSidebar() {
+    elem = document.getElementById("event_updates_content");
+    oldText = elem.innerText;
+    
+
+    
+}
+
+function showChains(result, url) {
     console.log(result);
     elem = document.getElementById('event_updates_content');
     oldText = elem.innerText;
@@ -49,28 +112,27 @@ function show_chains(result, url) {
 }
 
 function updateContent(){
-    // sendGetRequest('http://localhost:3000/loadAPI', show_chains);  
+    // sendGetRequest('http://localhost:3000/loadAPI', showChains);  
     fetch('http://localhost:3000/loadAPI')
-      .then(
-        function(response) {
-            console.log(response);
-          if (response.status !== 200) {
-            console.log('Looks like there was a problem. Status Code: ' +
-              response.status);
-            return;
-          }
-
-          // Examine the text in the response
-          response.json().then(function(data) {
-            console.log(data);
-          }).catch((e) => {
-            console.log(e);
-          });
-        }
-      )
-      .catch(function(err) {
+        .then(
+            function(response) {
+                console.log(response);
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                    response.status);
+                    return;
+                }
+                // Examine the text in the response
+                response.json().then(function(data) {
+                    console.log(data);
+                }).catch((e) => {
+                    console.log(e);
+                });
+            }
+        )
+    .catch(function(err) {
         console.log('Fetch Error :-S', err);
-      });
+    });
 }
 
 function animatePathFrom(from_id, length){
@@ -114,10 +176,14 @@ function sendMessage() {
     setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
+chains_array = [];
+num_chains = 0;
+
 function generateChains(){
     console.log("Generating parachains.");
     elem = document.getElementById('message_svg');
-    number = document.getElementById('num_chains').value;
+    // number = document.getElementById('num_chains').value;
+    number = num_chains
     angleBetween = (360/number)*(Math.PI/180);
     centerX = 350;
     centerY = 350;
@@ -126,25 +192,14 @@ function generateChains(){
     for(var i=0; i<number; i++){
         thisX = offsetX + centerX + Math.cos(angleBetween*i)*(centerX*.8);
         thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
-        text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
-        text += "<rect id='chain_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + i + "</text>";
+        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
+        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
+        text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
+        text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
     }
     text += "<circle cx='" + (centerX+offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
-    console.log(text);
+    // console.log(text);
     elem.innerHTML = text;
-}
-
-
-function showNewBlock(){
-    console.log("animating the bottom left circle");
-    anime({
-        targets: '#block_svg #left_circle',
-        scale: 1.25,
-        duration: 500,
-        direction: 'alternate',
-    })
 }
 
 
