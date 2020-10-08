@@ -145,16 +145,18 @@ function animatePathFrom(from_id, length){
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'linear',
         duration: length,
-        // direction: 'alternate',
+        direction: 'alternate',
         // loop: true
     });
 }
 
 function animatePathTo(to_id, length){
     elem = document.getElementById('chain_id_' + to_id);   
-    elem2 = document.getElementById('path_id_' + to_id);   
+    elem2 = document.getElementById('path_id_' + to_id); 
+    elem3 = document.getElementById('path_under_id_' + to_id);     
     elem.setAttribute('fill', '#00BB00');
-    elem2.setAttribute('stroke', '#00BB00');
+    elem2.setAttribute('stroke', '#000000');
+    elem3.setAttribute('stroke', '#00BB00');
     anime({
         targets: '#path_id_' + to_id,
         strokeDashoffset: [anime.setDashoffset, 0],
@@ -171,13 +173,24 @@ function sendMessage() {
     from_id = document.getElementById('from_chain').value;
     to_id = document.getElementById('to_chain').value;
     console.log("Animating sending a message from " + from_id + " to " + to_id);
+    //changeColor(from_id);
     animatePathFrom(from_id, 4000);
+    //changeColor(to_id);
     animatePathTo(to_id, 4000);
     setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
+
 chains_array = [];
 num_chains = 0;
+
+function changeColor(chain) {
+    elem = document.getElementById('chain_id_' + chain);
+    // text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
+    elem.setAttribute('fill', '#00BB00');
+
+}
+
 
 function generateChains(){
     console.log("Generating parachains.");
@@ -194,6 +207,7 @@ function generateChains(){
         thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
         text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
         text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
+        text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
     }
