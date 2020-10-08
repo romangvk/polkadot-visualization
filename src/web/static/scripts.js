@@ -97,11 +97,60 @@ function initImage() {
 }
 
 function initSidebar() {
-    elem = document.getElementById("event_updates_content");
-    oldText = elem.innerText;
-    
+    fetch('http://localhost:3000/subscribeToEvents').then(
+        function(response) {
+            console.log(response);
+            if(response.status !== 200) { 
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+            }
+            response.json().then(function(data){
+                console.log(data);
+                elem = document.getElementById('event_updates_content');
+                // This is where we need to continue poll the updateSidebar() 
+                // function so that the new heads are updated as time goes by... how?
+            }).catch((e) => {
+                console.log(e);
+            });
 
-    
+        }).catch((e) => {
+            console.log(e);
+        });    
+}
+
+// sleep time expects milliseconds
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function updateSidebar() {
+    fetch('http://localhost:3000/latestEvents').then(
+        function(response) {
+            console.log(response);
+            if(response.status !== 200) { 
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+            }
+            response.json().then(function(data){
+                console.log(data);
+                elem = document.getElementById('event_updates_content');
+                oldText = elem.innerText;
+                newText = "";
+                if(data.response.heads.length > 0){
+                    for(i = 0; i<data.response.heads.length; i++){
+                        newText += "New block number " + data.response.heads[i].number + " on relay chain.\n";
+                    }
+                    elem.innerText = newText + "\n\n" + oldText;
+                }
+                
+
+            }).catch((e) => {
+                console.log(e);
+            });
+
+        }).catch((e) => {
+            console.log(e);
+        }); 
 }
 
 function showChains(result, url) {
