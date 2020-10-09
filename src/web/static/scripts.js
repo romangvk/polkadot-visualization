@@ -31,7 +31,7 @@ function get(xmlHttp, target) {
 
 function sendGetRequest(targetUrl, callbackFunction) {
     var xmlHttp = createXmlHttp();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4) {
             console.log(xmlHttp);
             var myObject = JSON.parse(xmlHttp.responseText);
@@ -45,14 +45,14 @@ function sendGetRequest(targetUrl, callbackFunction) {
 function initServer() {
     fetch('http://localhost:3000/loadAPI')
         .then(
-            function(response) {
+            function (response) {
                 console.log(response);
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
                 // Examine the text in the response
-                response.json().then(function(data) {
+                response.json().then(function (data) {
                     console.log(data);
                     elem = document.getElementById('event_updates_content');
                     oldText = elem.innerText;
@@ -64,7 +64,7 @@ function initServer() {
                     console.log(e);
                 });
             }
-        ).catch(function(err) {
+        ).catch(function (err) {
             console.log('Fetch Error :-S', err);
         });
 
@@ -72,14 +72,14 @@ function initServer() {
 
 function initImage() {
     fetch('http://localhost:3000/getParachainIDs').then(
-        function(response) {
+        function (response) {
             console.log(response);
-            if(response.status !== 200) { 
+            if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' +
-                response.status);
+                    response.status);
                 return;
             }
-            response.json().then(function(data){
+            response.json().then(function (data) {
                 console.log(data);
                 chains_array = data.response.ids;
                 num_chains = chains_array.length;
@@ -98,51 +98,52 @@ function initImage() {
 
 function initSidebar() {
     fetch('http://localhost:3000/subscribeToEvents').then(
-        function(response) {
+        function (response) {
             console.log(response);
-            if(response.status !== 200) { 
+            if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' + response.status);
                 return;
             }
-            response.json().then(function(data){
+            response.json().then(function (data) {
                 console.log(data);
                 elem = document.getElementById('event_updates_content');
                 // This is where we need to continue poll the updateSidebar() 
                 // function so that the new heads are updated as time goes by... how?
+                setInterval(() => { updateSidebar(); }, 6000);
             }).catch((e) => {
                 console.log(e);
             });
 
         }).catch((e) => {
             console.log(e);
-        });    
+        });
 }
 
 // sleep time expects milliseconds
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 function updateSidebar() {
     fetch('http://localhost:3000/latestEvents').then(
-        function(response) {
+        function (response) {
             console.log(response);
-            if(response.status !== 200) { 
+            if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' + response.status);
                 return;
             }
-            response.json().then(function(data){
+            response.json().then(function (data) {
                 console.log(data);
                 elem = document.getElementById('event_updates_content');
                 oldText = elem.innerText;
                 newText = "";
-                if(data.response.heads.length > 0){
-                    for(i = 0; i<data.response.heads.length; i++){
+                if (data.response.heads.length > 0) {
+                    for (i = 0; i < data.response.heads.length; i++) {
                         newText += "New block number " + data.response.heads[i].number + " on relay chain.\n";
                     }
                     elem.innerText = newText + "\n\n" + oldText;
                 }
-                
+
 
             }).catch((e) => {
                 console.log(e);
@@ -150,7 +151,7 @@ function updateSidebar() {
 
         }).catch((e) => {
             console.log(e);
-        }); 
+        });
 }
 
 function showChains(result, url) {
@@ -160,33 +161,33 @@ function showChains(result, url) {
     elem.innerText = result.response + oldText;
 }
 
-function updateContent(){
+function updateContent() {
     // sendGetRequest('http://localhost:3000/loadAPI', showChains);  
     fetch('http://localhost:3000/loadAPI')
         .then(
-            function(response) {
+            function (response) {
                 console.log(response);
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
-                    response.status);
+                        response.status);
                     return;
                 }
                 // Examine the text in the response
-                response.json().then(function(data) {
+                response.json().then(function (data) {
                     console.log(data);
                 }).catch((e) => {
                     console.log(e);
                 });
             }
         )
-    .catch(function(err) {
-        console.log('Fetch Error :-S', err);
-    });
+        .catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
 }
 
-function animatePathFrom(from_id, length){
-    elem = document.getElementById('chain_id_' + from_id);   
-    elem2 = document.getElementById('path_id_' + from_id);   
+function animatePathFrom(from_id, length) {
+    elem = document.getElementById('chain_id_' + from_id);
+    elem2 = document.getElementById('path_id_' + from_id);
     elem.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#00BB00');
     anime({
@@ -199,10 +200,10 @@ function animatePathFrom(from_id, length){
     });
 }
 
-function animatePathTo(to_id, length){
-    elem = document.getElementById('chain_id_' + to_id);   
-    elem2 = document.getElementById('path_id_' + to_id); 
-    elem3 = document.getElementById('path_under_id_' + to_id);     
+function animatePathTo(to_id, length) {
+    elem = document.getElementById('chain_id_' + to_id);
+    elem2 = document.getElementById('path_id_' + to_id);
+    elem3 = document.getElementById('path_under_id_' + to_id);
     elem.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#000000');
     elem3.setAttribute('stroke', '#00BB00');
@@ -226,7 +227,7 @@ function sendMessage() {
     animatePathFrom(from_id, 4000);
     //changeColor(to_id);
     animatePathTo(to_id, 4000);
-    setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
+    setTimeout(() => { generateChains() }, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
 
@@ -241,26 +242,26 @@ function changeColor(chain) {
 }
 
 
-function generateChains(){
+function generateChains() {
     console.log("Generating parachains.");
     elem = document.getElementById('message_svg');
     // number = document.getElementById('num_chains').value;
     number = num_chains
-    angleBetween = (360/number)*(Math.PI/180);
+    angleBetween = (360 / number) * (Math.PI / 180);
     centerX = 350;
     centerY = 350;
     offsetX = 150;
     text = "";
-    for(var i=0; i<number; i++){
-        thisX = offsetX + centerX + Math.cos(angleBetween*i)*(centerX*.8);
-        thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
-        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
-        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-        text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
+    for (var i = 0; i < number; i++) {
+        thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .8);
+        thisY = centerY + Math.sin(angleBetween * i) * (centerX * .8);
+        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
+        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
+        text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
+        text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
+        text += "<text x='" + (thisX - 15) + "' y='" + (thisY - 50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
     }
-    text += "<circle cx='" + (centerX+offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
+    text += "<circle cx='" + (centerX + offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
     // console.log(text);
     elem.innerHTML = text;
 }
@@ -275,7 +276,7 @@ async function main() {
     update_parachain_heads(api);
     show_new_blocks(api);
     show_queues(api);
-    
+
 }
 
 async function show_new_blocks(api) {
@@ -286,7 +287,7 @@ async function show_new_blocks(api) {
 
 async function show_queues(api) {
     const parachainIDS = await api.query.registrar.parachains(); // returns an arary of all the parachains connected to the network
-    parachainIDS.forEach(async (id)=>{
+    parachainIDS.forEach(async (id) => {
         await api.query.parachains.downwardMessageQueue(id, (incoming_messages) => {
             console.log("Parachain with ID " + id + " - Incoming Messages: " + incoming_messages.length + "\n");
         });
@@ -299,8 +300,8 @@ async function show_queues(api) {
 async function update_parachain_heads(api) {
     const parachainIDS = await api.query.registrar.parachains(); // returns an arary of all the parachains connected to the network
 
-    parachainIDS.forEach(async (id)=>{
-        await api.query.parachains.heads(id, (head)=>{
+    parachainIDS.forEach(async (id) => {
+        await api.query.parachains.heads(id, (head) => {
             // elem = document.getElementById('event_updates_content');
             // elem.innerText = elem.innerText + "Parachain with ID: " + id + " new head: " + head.toHuman() + "\n";
             console.log("Parachain with ID " + id + " - New Head: " + head.toHuman().substring(0, 20) + "...\n");
