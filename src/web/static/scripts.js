@@ -271,19 +271,19 @@ function generateChains() {
         text += "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2F";
         text += parachain_id_to_url[chains_array[i]];
         text += "#/explorer'>";
-        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
-        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-        text += "</a>";
+        text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
+        text += "<rect id='innerchain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
+        text += "</a>\n";
         text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<text x='" + (thisX - 15) + "' y='" + (thisY - 50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
     }
     text += "<circle cx='" + (centerX + offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
-    // for (var i = 0; i < number; i++) {
-    //     thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .34);
-    //     thisY = centerY + Math.sin(angleBetween * i) * (centerX * .34);
-    //     text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-    // }
+    for (var i = 0; i < number; i++) {
+        thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .34);
+        thisY = centerY + Math.sin(angleBetween * i) * (centerX * .34);
+        text += "<rect id='chain_connect_id_" + chains_array[i] + "' x='" + (thisX - 10) + "' y='" + (thisY - 10) + "' rx='4' ry='4' width='20' height='20' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
+    }
     // console.log(text);
     elem.innerHTML = text;
 }
