@@ -45,7 +45,7 @@ function sendGetRequest(targetUrl, callbackFunction) {
 
 
 function initServer() {
-    fetch('http://localhost:3000/loadAPI')
+    fetch('http://polkadot-visualization.appspot.com/loadAPI')
         .then(
             function (response) {
                 console.log(response);
@@ -73,7 +73,7 @@ function initServer() {
 }
 
 function initImage() {
-    fetch('http://localhost:3000/getParachainIDs').then(
+    fetch('http://polkadot-visualization.appspot.com/getParachainIDs').then(
         function (response) {
             console.log(response);
             if (response.status !== 200) {
@@ -99,7 +99,7 @@ function initImage() {
 }
 
 function initSidebar() {
-    fetch('http://localhost:3000/subscribeToEvents').then(
+    fetch('http://polkadot-visualization.appspot.com/subscribeToEvents').then(
         function (response) {
             console.log(response);
             if (response.status !== 200) {
@@ -127,7 +127,7 @@ function sleep(time) {
 }
 
 function updateSidebar() {
-    fetch('http://localhost:3000/latestEvents').then(
+    fetch('http://polkadot-visualization.appspot.com/latestEvents').then(
         function (response) {
             console.log(response);
             if (response.status !== 200) {
@@ -166,7 +166,7 @@ function showChains(result, url) {
 
 function updateContent() {
     // sendGetRequest('http://localhost:3000/loadAPI', showChains);  
-    fetch('http://localhost:3000/loadAPI')
+    fetch('http://polkadot-visualization.appspot.com/loadAPI')
         .then(
             function (response) {
                 console.log(response);
