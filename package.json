@@ -2,10 +2,10 @@
   "name": "polkadot_visualization",
   "version": "1.0.0",
   "description": "",
-  "main": "./static/index.html",
+  "main": "./index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node src/webapp/static/js/server.js",
+    "start": "nodemon --exec babel-node src/server.js",
     "dev": "lite-server"
   },
   "repository": {
