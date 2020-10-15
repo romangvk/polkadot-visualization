@@ -265,6 +265,8 @@ function generateChains() {
     centerY = 350;
     offsetX = 150;
     text = "";
+
+    // build the outer parachain boxes and the paths that lead to the middle
     for (var i = 0; i < number; i++) {
         thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .8);
         thisY = centerY + Math.sin(angleBetween * i) * (centerX * .8);
@@ -278,7 +280,13 @@ function generateChains() {
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<text x='" + (thisX - 15) + "' y='" + (thisY - 50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
     }
+
+    // build the relay chain
+    text += "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frococo-rpc.polkadot.io#/explorer'>";
     text += "<circle cx='" + (centerX + offsetX) + "' cy='" + centerY + "' r='120' fill='none' stroke-width='40' stroke='#777777' />";
+    text += "</a>";
+
+    // build the little white boxes in the relay chain
     for (var i = 0; i < number; i++) {
         thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .34);
         thisY = centerY + Math.sin(angleBetween * i) * (centerX * .34);
