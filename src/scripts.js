@@ -226,9 +226,7 @@ function sendMessage() {
     from_id = document.getElementById('from_chain').value;
     to_id = document.getElementById('to_chain').value;
     console.log("Animating sending a message from " + from_id + " to " + to_id);
-    //changeColor(from_id);
     animatePathFrom(from_id, 4000);
-    //changeColor(to_id);
     animatePathTo(to_id, 4000);
     setTimeout(() => { generateChains() }, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
