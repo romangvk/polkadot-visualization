@@ -1,7 +1,8 @@
 # Polkadot Visualization
-This app is hosted on https://www.freecodecamp.org/news/how-to-shove-an-existing-application-into-containers-with-docker-6dcbd6152fe4/.
+This app is hosted [here][1].
 
 While running locally, the following command will start the server.
 ```shell
 npm start
 ```
+[1]: <https://polkadot-visualization.appspot.com/> "Polkadot Visualization"
