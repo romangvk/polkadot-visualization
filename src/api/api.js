@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 const uri = process.env.URI;
-const max_stored_blocks = 100;
+const max_stored_blocks = 10;
 
 
 
@@ -70,23 +70,48 @@ export default class API {
     }
 
     heads = [];
-    unsubscribe = null;
+    head = null;
+    subscription = null;
 
-    subscribed() { return (this.unsubscribe != null); }
+    dirtyHeads = 0;
 
-    async subscribeToNewHeads() {
+    // Returns whether or not the api is subscribed to new heads
+    subscribed() { return (this.subscription != null); }
+
+    // Subscribes to new heads and unsubscribes once a certain number of heads have been received
+    async subscribeNewHeads() {
         if (this.subscribed()) return "Already subscribed.";
-        this.unsubscribe = await this.papi.rpc.chain.subscribeNewHeads((block) => {
+        this.subscription = await this.papi.rpc.chain.subscribeNewHeads((block) => {
             console.log("New block: " + block.number + "\n");
+            
+            // Add new block to list of blocks
             this.heads.push(block);
             if (this.heads.length > max_stored_blocks) this.heads.pop();
-        })
-        return "Subscribed to new events.";
+            
+            // Store latest block
+            this.head = block;
+            
+            // Unsubscribe if more than dirtyHeads blocks have been loaded since a latestHead request
+            this.dirtyHeads++;
+            if (this.dirtyHeads > max_stored_blocks) this.unsubscribeNewHeads();
+        });
+        return "Subscribed to new blocks.";
     }
 
-    unsubscribeNewHeads() { if (this.unsubscribe != null) this.unsubscribe(); }
+    // Unsubscribes the api from new heads and sets subscription to null
+    unsubscribeNewHeads() {
+        if (this.subscription != null) {
+            this.subscription();
+            this.subscription = null;
+            this.heads = [];
+            console.log('unsubscribed!!!');
+            return "Unsubscribed successfully.";
+        } else return "Must be subscribed to unsubscribe.";
+    }
 
-    latestHeads() {
-        return { heads: [this.heads[this.heads.length - 1]], totalHeads: this.heads.length };
+    // Returns the latest head
+    latestHead() {
+        this.dirtyHeads = 0;
+        return { head: this.head };
     }
 }

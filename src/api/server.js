@@ -40,7 +40,7 @@ app.get('/loadAPI', (req, res) => {
 });
 
 app.get('/subscribeToEvents', (req, res) => {
-    polkadotApi.subscribeToNewHeads().then((response) => {
+    polkadotApi.subscribeNewHeads().then((response) => {
         return res.send({ response: response });
     }).catch((e) => {
         return res.send(e);
@@ -48,7 +48,7 @@ app.get('/subscribeToEvents', (req, res) => {
 });
 
 app.get('/latestEvents', (req, res) => {
-    return res.send({ response: polkadotApi.latestHeads() });
+    return res.send({ response: polkadotApi.latestHead() });
 });
 
 app.listen(process.env.PORT, () => {
