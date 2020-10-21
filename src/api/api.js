@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { response } from 'express';
 
 const uri = process.env.URI;
+const max_stored_blocks = 100;
 
 
 
@@ -15,11 +15,12 @@ export default class API {
 
     // test method to ensure api is working
     test() {
-        return ({'message': this.testMessage});
+        return ({ 'message': this.testMessage });
     }
 
     loadAPI() {
         return new Promise((resolve, reject) => {
+            if (this.papi != null) resolve('API already loaded!');
             let provider = new WsProvider(uri);
             ApiPromise.create({ provider }).then((r) => {
                 this.papi = r;
@@ -68,19 +69,24 @@ export default class API {
         });
     }
 
-    heads = []
+    heads = [];
+    unsubscribe = null;
+
+    subscribed() { return (this.unsubscribe != null); }
 
     async subscribeToNewHeads() {
-        const block_unsub = await this.papi.rpc.chain.subscribeNewHeads((block) => {
+        if (this.subscribed()) return "Already subscribed.";
+        this.unsubscribe = await this.papi.rpc.chain.subscribeNewHeads((block) => {
             console.log("New block: " + block.number + "\n");
             this.heads.push(block);
+            if (this.heads.length > max_stored_blocks) this.heads.pop();
         })
         return "Subscribed to new events.";
     }
 
-    popHeads() {
-        let copy = this.heads;
-        this.heads = [];
-        return { heads: copy };
+    unsubscribeNewHeads() { if (this.unsubscribe != null) this.unsubscribe(); }
+
+    latestHeads() {
+        return { heads: [this.heads[this.heads.length - 1]], totalHeads: this.heads.length };
     }
 }
