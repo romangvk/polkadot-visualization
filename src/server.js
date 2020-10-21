@@ -12,8 +12,22 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    return res.send({ response: polkadotApi.test() });
+    // return res.send({ response: polkadotApi.test() });
+    return res.sendFile('./index.html', {root: __dirname});
 });
+
+app.get('/styles.css', (req, res) => {
+    return res.sendFile('./styles.css', {root: __dirname});
+});
+
+app.get('/scripts.js', (req, res) => {
+    return res.sendFile('./scripts.js', {root: __dirname});
+});
+
+app.get('/anime.min.js', (req, res) => {
+    return res.sendFile('./anime.min.js', {root: __dirname});
+});
+
 
 app.get('/getParachains', (req, res) => {
     polkadotApi.getParachains().then((response) => {
