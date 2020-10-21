@@ -1,73 +1,9 @@
 const{ ApiPromise, WsProvider } = require('@polkadot/api');
 
 
-function animatePathFrom(from_id, length){
-    anime({
-        targets: '#path_id_' + from_id,
-        strokeDashoffset: [anime.setDashoffset, 0],
-        easing: 'linear',
-        duration: length,
-        // direction: 'alternate',
-        // loop: true
-    });
-}
-
-function animatePathTo(to_id, length){
-    anime({
-        targets: '#path_id_' + to_id,
-        strokeDashoffset: [anime.setDashoffset, 0],
-        easing: 'linear',
-        duration: length,
-        delay: length,
-        direction: 'reverse',
-        // loop: true
-    });
-}
-
-
-function sendMessage() {
-    from_id = document.getElementById('from_chain').value;
-    to_id = document.getElementById('to_chain').value;
-    console.log("Animating sending a message from " + from_id + " to " + to_id);
-    animatePathFrom(from_id, 4000);
-    animatePathTo(to_id, 4000);
-    setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
-}
-
-function generateChains(){
-    console.log("Generating parachains.");
-    elem = document.getElementById('message_svg');
-    number = document.getElementById('num_chains').value;
-    angleBetween = (360/number)*(Math.PI/180);
-    centerX = 350;
-    centerY = 350;
-    offsetX = 150;
-    text = "";
-    for(var i=0; i<number; i++){
-        thisX = offsetX + centerX + Math.cos(angleBetween*i)*(centerX*.8);
-        thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
-        text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
-        text += "<rect id='chain_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
-        text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<text x='" + (thisX-15) + "' y='" + (thisY-50) + "' fill='black'> ID: " + i + "</text>";
-    }
-    console.log(text);
-    elem.innerHTML = text;
-}
-
-
-function showNewBlock(){
-    console.log("animating the bottom left circle");
-    anime({
-        targets: '#block_svg #left_circle',
-        scale: 1.25,
-        duration: 500,
-        direction: 'alternate',
-    })
-}
-
 
 async function main() {
+    // const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
     const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
     const api = await ApiPromise.create({ provider });
     const chain = await api.rpc.system.chain();
@@ -76,8 +12,15 @@ async function main() {
     update_parachain_heads(api);
     show_new_blocks(api);
     show_queues(api);
-    
+    get_parachain_name(dapi);
 }
+
+
+
+// async function get_parachain_name() {
+//     const name = await dapi.rpc.system.chain()
+//     console.log(name);
+// }
 
 async function show_new_blocks(api) {
     const block_unsub = await api.rpc.chain.subscribeNewHeads((block) => {
