@@ -126,6 +126,8 @@ function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+latestNumber = 0;
+
 function updateSidebar() {
     fetch('./latestEvents').then(
         function (response) {
@@ -139,11 +141,10 @@ function updateSidebar() {
                 elem = document.getElementById('event_updates_content');
                 oldText = elem.innerText;
                 newText = "";
-                if (data.response.heads.length > 0) {
-                    console.log(data.response.heads.length);
-                    for (i = 0; i < data.response.heads.length; i++) {
-                        newText += "New block number " + data.response.heads[i].number + " on relay chain.\n";
-                    }
+                if (data.response.head.number != latestNumber) {
+                    console.log(data.response.head.number);
+                    newText += "New block number " + data.response.head.number + " on relay chain.\n";
+                    latestNumber = data.response.head.number;
                     elem.innerText = newText + "\n\n" + oldText;
                 }
 
