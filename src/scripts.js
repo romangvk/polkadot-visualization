@@ -145,7 +145,7 @@ function updateSidebar() {
                     console.log(data.response.head.number);
                     newText += "New block number " + data.response.head.number + " on relay chain.\n";
                     latestNumber = data.response.head.number;
-                    elem.innerText = newText + "\n\n" + oldText;
+                    elem.innerText = newText + "\n" + oldText;
                 }
 
 

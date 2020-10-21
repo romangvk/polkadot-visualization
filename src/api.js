@@ -80,7 +80,11 @@ export default class API {
 
     // Subscribes to new heads and unsubscribes once a certain number of heads have been received
     async subscribeNewHeads() {
-        if (this.subscribed()) return "Already subscribed.";
+        if (this.subscribed()){
+            console.log("Already subscribed:");
+            return "Already subscribed.";
+
+        }
         this.subscription = await this.papi.rpc.chain.subscribeNewHeads((block) => {
             console.log("New block: " + block.number + "\n");
             
