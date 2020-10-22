@@ -10,9 +10,14 @@ async function main() {
     console.log(`Connected to ${chain}!`);
 
     update_parachain_heads(api);
+    // show_queues(api);
     show_new_blocks(api);
-    show_queues(api);
-    get_parachain_name(dapi);
+    get_current_head(api)
+}
+
+async function get_current_head(api) {
+    const lastHeader = await api.rpc.chain.getHeader();
+    console.log("Last Number: " + lastHeader.number);
 }
 
 
