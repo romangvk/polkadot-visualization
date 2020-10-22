@@ -20,7 +20,12 @@ export default class API {
 
     loadAPI() {
         return new Promise((resolve, reject) => {
-            if (this.papi != null) resolve('API already loaded!');
+            if (this.papi != null){
+                this.papi = r;
+                this.papi.rpc.system.chain().then((r) => {
+                    resolve(`Connected to ${r} at ${uri}`, r, uri);
+                }).catch((e) => { reject(e); });
+            }
             let provider = new WsProvider(uri);
             ApiPromise.create({ provider }).then((r) => {
                 this.papi = r;
@@ -117,5 +122,43 @@ export default class API {
     latestHead() {
         this.dirtyHeads = 0;
         return { head: this.head };
+    }
+
+    parachainHeads = {};
+    chainSubscriptions = {};
+
+    parachainSubscribed(ID){
+        console.log("Checking " + ID);
+        console.log(this.chainSubscriptions[ID] != null);
+        return (this.chainSubscriptions[ID] != null);
+    }
+
+    async subscribeParachainHeads() {
+        const parachainIDS = await this.papi.query.registrar.parachains(); // returns an arary of all the parachains connected to the network
+        console.log("Parachain IDS: " + parachainIDS);
+        for(i = 0; i<parachainIDS.length; i++){
+            this.chainSubscriptions[parachainIDS[i]] = null;
+            subscribeParachainHead(parachainIDS[i]);
+        }
+        return "Subscribed to parachains";
+    }
+
+    async subscribeParachainHead(chainID) {
+        if (parachainSubscribed(chainID)){
+            console.log("Chain " + chainID + " already subscribed.");
+            return "Chain " + chainID + " already subscribed.";
+        }
+
+        this.chainSubscriptions[chainNum] = await this.papi.query.parachains.heads(chainID, (head)=>{
+            this.parachainHeads[chainID] = head;
+            console.log("Parachain with ID " + chainID + " - New Head: " + head.toHuman().substring(0, 20) + "...");
+        });
+        console.log("Subscribed to parachain " + chainNum);
+        return "Subscribed to parachain " + chainNum;
+    }
+
+
+    getParachainHeads() {
+        return {parachainHeads: this.parachainHeads}
     }
 }

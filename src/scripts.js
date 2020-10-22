@@ -48,14 +48,14 @@ function initServer() {
     fetch('./loadAPI')
         .then(
             function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
                 // Examine the text in the response
                 response.json().then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                     elem = document.getElementById('event_updates_content');
                     oldText = elem.innerText;
                     elem.innerText = data.response + "\n\n" + oldText;
@@ -75,14 +75,14 @@ function initServer() {
 function initImage() {
     fetch('./getParachainIDs').then(
         function (response) {
-            console.log(response);
+            // console.log(response);
             if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' +
                     response.status);
                 return;
             }
             response.json().then(function (data) {
-                console.log(data);
+                // console.log(data);
                 chains_array = data.response.ids;
                 num_chains = chains_array.length;
                 elem = document.getElementById('event_updates_content');
@@ -101,17 +101,15 @@ function initImage() {
 function initSidebar() {
     fetch('./subscribeToEvents').then(
         function (response) {
-            console.log(response);
+            // console.log(response);
             if (response.status !== 200) {
                 console.log('Looks like there was a problem. Status Code: ' + response.status);
                 return;
             }
             response.json().then(function (data) {
-                console.log(data);
+                // console.log(data);
                 elem = document.getElementById('event_updates_content');
-                // This is where we need to continue poll the updateSidebar() 
-                // function so that the new heads are updated as time goes by... how?
-                setInterval(() => { updateSidebar(); }, 6000);
+                setInterval(() => { updateRelaychain(); updateParachains(); }, 6000);
             }).catch((e) => {
                 console.log(e);
             });
@@ -128,8 +126,40 @@ function sleep(time) {
 
 latestNumber = 0;
 
-function updateSidebar() {
+function updateRelaychain() {
     fetch('./latestEvents').then(
+        function (response) {
+            // console.log(response);
+            if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+            }
+            response.json().then(function (data) {
+                // console.log(data);
+                elem = document.getElementById('event_updates_content');
+                oldText = elem.innerText;
+                newText = "";
+                if (data.response.head.number != latestNumber) {
+                    console.log(data.response.head.number);
+                    newText += "Relay Chain - New block: " + data.response.head.number + "\n";
+                    latestNumber = data.response.head.number;
+                    elem.innerText = newText + "\n" + oldText;
+                }
+
+
+            }).catch((e) => {
+                console.log(e);
+            });
+
+        }).catch((e) => {
+            console.log(e);
+        });
+}
+
+currentHeads = {}
+
+function updateParachains() {
+    fetch('./getParachains').then(
         function (response) {
             console.log(response);
             if (response.status !== 200) {
@@ -141,13 +171,20 @@ function updateSidebar() {
                 elem = document.getElementById('event_updates_content');
                 oldText = elem.innerText;
                 newText = "";
-                if (data.response.head.number != latestNumber) {
-                    console.log(data.response.head.number);
-                    newText += "New block number " + data.response.head.number + " on relay chain.\n";
-                    latestNumber = data.response.head.number;
+                hash_array = data.response.parachains;
+                for(i=0; i<hash_array.length; i++){
+                    if(currentHeads[i] == null){
+                        newText += parachain_id_to_name[hash_array[i]['id']] + "(" + hash_array[i]['id'] + ") - current head: " + hash_array[i]['head'].substring(0, 15) + "...\n";
+
+                    }
+                    else if(currentHeads[i]['head'] != hash_array[i]['head']){
+                        newText += parachain_id_to_name[hash_array[i]['id']] + "(" + hash_array[i]['id'] + ") - new head: " + hash_array[i]['head'].substring(0, 15) + "...\n";
+                    }
+                }
+                currentHeads = hash_array;
+                if(newText != ""){
                     elem.innerText = newText + "\n" + oldText;
                 }
-
 
             }).catch((e) => {
                 console.log(e);
@@ -165,29 +202,6 @@ function showChains(result, url) {
     elem.innerText = result.response + oldText;
 }
 
-function updateContent() {
-    // sendGetRequest('http://localhost:3000/loadAPI', showChains);  
-    fetch('./loadAPI')
-        .then(
-            function (response) {
-                console.log(response);
-                if (response.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                        response.status);
-                    return;
-                }
-                // Examine the text in the response
-                response.json().then(function (data) {
-                    console.log(data);
-                }).catch((e) => {
-                    console.log(e);
-                });
-            }
-        )
-        .catch(function (err) {
-            console.log('Fetch Error :-S', err);
-        });
-}
 
 function animatePathFrom(from_id, length) {
     elem = document.getElementById('chain_id_' + from_id);
@@ -199,7 +213,7 @@ function animatePathFrom(from_id, length) {
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'linear',
         duration: length,
-        direction: 'alternate',
+        direction: 'altdernate',
         // loop: true
     });
 }
@@ -244,6 +258,7 @@ function changeColor(chain) {
 }
 
 
+// Hard coded URLs for each of the parachains.. Not really a better way to do this because the URLs aren't named with any real consistency
 parachain_id_to_url = {    100: 'tick-rpc.polkadot.io',
                             110: 'trick-rpc.polkadot.io',
                             120: 'track-rpc.polkadot.io',
@@ -254,6 +269,20 @@ parachain_id_to_url = {    100: 'tick-rpc.polkadot.io',
                             8000: 'parachain-rpc.darwinia.network'
                         }
 
+// There might be a way to get these from the Network, but it would require the URLs above anyway, so we might as well just hardcode these too
+parachain_id_to_name = {    100: 'Tick',
+                            110: 'Trick',
+                            120: 'Track',
+                            1000: 'Plasm',
+                            3000: 'Robonomics',
+                            5000: 'Mandala',
+                            5001: 'Turbulence',
+                            8000: 'Darwinia'
+                        }
+
+
+// This generates the image on the webpage of the network
+// It does so by generating the SVG components that make up the complete image
 function generateChains() {
     console.log("Generating parachains.");
     elem = document.getElementById('message_svg');
