@@ -30,7 +30,7 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="d-none d-md-block col col-md-9">
+        <div class="d-none d-md-block col col-md-8">
             <div class="row">
                 <div class="col">
                     <!-- <label for="num_chains">Number of Parachains:</label>
@@ -42,14 +42,14 @@
                     <input type="number" id="to_chain" name="to_chain">
                     <button class="btn btn-primary btn-sm" id="sendMessage" onclick="sendMessage()">Animate Sending Message</button>
                     <div id="messageAnimation">
-                        <svg class="border" id="message_svg" height="700" width="1000">
+                        <svg id="message_svg" height="700" width="1000">
                             <!-- This is where the relaychain and parachains are drawn -->
                         </svg>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col col-md-3">
+        <div class="col col-md-4">
           <div id="event_updates">
             <div id="event_updates_header" class="text-center">
               <h4>Event Updates</h4>
