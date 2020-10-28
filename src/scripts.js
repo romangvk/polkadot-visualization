@@ -171,14 +171,23 @@ function updateParachains() {
                 elem = document.getElementById('event_updates_content');
                 oldText = elem.innerText;
                 newText = "";
+                newText2 = "";
                 hash_array = data.response.parachains;
+                console.log(hash_array);
                 for(i=0; i<hash_array.length; i++){
+                    elem2 = document.getElementById('hash_text_id_' + chains_array[i]);
+
                     if(currentHeads[i] == null){
                         newText += parachain_id_to_name[hash_array[i]['id']] + "(" + hash_array[i]['id'] + ") - current head: " + hash_array[i]['head'].substring(0, 15) + "...\n";
-
+                        newText2 = "Hash: " + hash_array[i]['head'].substring(0, 15) + "...";
+                        console.log(newText2);
+                        elem2.innerHTML = newText2;
                     }
                     else if(currentHeads[i]['head'] != hash_array[i]['head']){
                         newText += parachain_id_to_name[hash_array[i]['id']] + "(" + hash_array[i]['id'] + ") - new head: " + hash_array[i]['head'].substring(0, 15) + "...\n";
+                        newText2 = "Hash: " + hash_array[i]['head'].substring(0, 15) + "...";
+                        console.log(newText2);
+                        elem2.innerHTML = newText2;
                     }
                 }
                 currentHeads = hash_array;
@@ -306,7 +315,8 @@ function generateChains() {
         text += "</a>\n";
         text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<text x='" + (thisX - 15) + "' y='" + (thisY - 50) + "' fill='black'> ID: " + chains_array[i] + "</text>";
+        text += "<text x='" + (thisX - 30) + "' y='" + (thisY - 55) + "' fill='black'> " + parachain_id_to_name[chains_array[i]] + " (" + chains_array[i] + ")</text>";
+        text += "<text id='hash_text_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 35) + "' fill='black'></text>";
     }
 
     // build the relay chain
