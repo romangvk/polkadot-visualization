@@ -2,6 +2,10 @@ body {
     padding-top: 65px;
 }
 
+svg {
+    padding: 15px 15px 15px 15px;
+}
+
 .navbar {
     background-color: #E6007A;
 }

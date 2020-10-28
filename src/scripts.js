@@ -299,7 +299,7 @@ function generateChains() {
     number = num_chains
     angleBetween = (360 / number) * (Math.PI / 180);
     centerX = 350;
-    centerY = 350;
+    centerY = 360;
     offsetX = 150;
     text = "";
 
@@ -315,8 +315,8 @@ function generateChains() {
         text += "</a>\n";
         text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
-        text += "<text x='" + (thisX - 30) + "' y='" + (thisY - 55) + "' fill='black'> " + parachain_id_to_name[chains_array[i]] + " (" + chains_array[i] + ")</text>";
-        text += "<text id='hash_text_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 35) + "' fill='black'></text>";
+        text += "<text x='" + (thisX - 50) + "' y='" + (thisY - 60) + "' fill='black'> " + parachain_id_to_name[chains_array[i]] + " (" + chains_array[i] + ")</text>";
+        text += "<text id='hash_text_id_" + chains_array[i] + "' x='" + (thisX - 50) + "' y='" + (thisY - 40) + "' fill='black'></text>";
     }
 
     // build the relay chain
