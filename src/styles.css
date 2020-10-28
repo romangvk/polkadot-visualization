@@ -5,3 +5,10 @@ body {
 .navbar {
     background-color: #E6007A;
 }
+
+#event_updates {
+    background-color: #222222;
+    height: 750px;
+    width: 100%;
+    padding: 15px;
+}
