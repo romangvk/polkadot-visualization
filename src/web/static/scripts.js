@@ -10,32 +10,64 @@
 
 function animatePathFrom(from_id, length){
     elem = document.getElementById('chain_id_' + from_id);   
+    elem3 = document.getElementById('chain_under_id_' + from_id);
     elem2 = document.getElementById('path_id_' + from_id);   
     elem.setAttribute('fill', '#00BB00');
+    elem3.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#00BB00');
+    var x = document.getElementById('chain_under_id_' + from_id).getAttribute("x");
+    x = 489-x;
+    var y = document.getElementById('chain_under_id_' + from_id).getAttribute("y");
+    y = 339-y;
+    anime({
+        targets: '#chain_under_id_' + from_id,
+        translateX: x,
+        translateY: y,
+        easing: 'linear',
+        duration: length/2,
+        //direction: 'reverse',
+    });
+    
     anime({
         targets: '#path_id_' + from_id,
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'linear',
         duration: length,
-        direction: 'alternate',
+        //direction: 'alternate',
         // loop: true
     });
 }
 
 function animatePathTo(to_id, length){
-    elem = document.getElementById('chain_id_' + to_id);   
+    elem = document.getElementById('chain_id_' + to_id); 
+    elem5 = document.getElementById('chain_under_id_' + to_id);  
     elem2 = document.getElementById('path_id_' + to_id); 
     elem3 = document.getElementById('path_under_id_' + to_id);     
     elem.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#000000');
     elem3.setAttribute('stroke', '#00BB00');
+    elem5.setAttribute('fill', '#00BB00');
+    var x2 = document.getElementById('chain_under_id_' + to_id).getAttribute("x");
+    x2 = 489-x2;
+    var y2 = document.getElementById('chain_under_id_' + to_id).getAttribute("y");
+    y2 = 339-y2;
+    
+    anime({
+        delay: 1000,
+        targets: '#chain_under_id_' + to_id,
+        translateX: x2,
+        translateY: y2,
+        easing: 'linear',
+        duration: length/2,
+        direction: 'reverse',
+        delay: 2000,
+    });
+
     anime({
         targets: '#path_id_' + to_id,
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'linear',
         duration: length,
-        delay: length,
         direction: 'reverse',
         // loop: true
     });
@@ -74,6 +106,7 @@ function generateChains(){
         thisY = centerY + Math.sin(angleBetween*i)*(centerX*.8);
         text += "<rect id='chain_id_" + i + "' x='" + (thisX-30) + "' y='" + (thisY-30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' />\n";
         text += "<rect id='chain_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
+        text += "<rect id='chain_under_id_" + i + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' />\n";
         text += "<path id='path_under_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + i + "'d='M" + thisX + " " + thisY + " L" + (offsetX+centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         
