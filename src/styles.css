@@ -1,5 +1,6 @@
 body {
     padding-top: 65px;
+    height: 100%;
 }
 
 svg {
@@ -12,7 +13,12 @@ svg {
 
 #event_updates {
     background-color: #222222;
-    height: 750px;
+    height: 90vh;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
+}
+
+#graphic {
+    height: auto;
+    width: 100%;
 }

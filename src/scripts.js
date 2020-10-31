@@ -212,28 +212,94 @@ function showChains(result, url) {
 }
 
 
-function animatePathFrom(from_id, length) {
-    elem = document.getElementById('chain_id_' + from_id);
-    elem2 = document.getElementById('path_id_' + from_id);
+// function animatePathFrom(from_id, length) {
+//     elem = document.getElementById('chain_id_' + from_id);
+//     elem2 = document.getElementById('path_id_' + from_id);
+//     elem.setAttribute('fill', '#00BB00');
+//     elem2.setAttribute('stroke', '#00BB00');
+//     anime({
+//         targets: '#path_id_' + from_id,
+//         strokeDashoffset: [anime.setDashoffset, 0],
+//         easing: 'linear',
+//         duration: length,
+//         direction: 'alternate',
+//         // loop: true
+//     });
+// }
+
+// function animatePathTo(to_id, length) {
+//     elem = document.getElementById('chain_id_' + to_id);
+//     elem2 = document.getElementById('path_id_' + to_id);
+//     elem3 = document.getElementById('path_under_id_' + to_id);
+//     elem.setAttribute('fill', '#00BB00');
+//     elem2.setAttribute('stroke', '#000000');
+//     elem3.setAttribute('stroke', '#00BB00');
+//     anime({
+//         targets: '#path_id_' + to_id,
+//         strokeDashoffset: [anime.setDashoffset, 0],
+//         easing: 'linear',
+//         duration: length,
+//         delay: length,
+//         direction: 'reverse',
+//         // loop: true
+//     });
+// }
+
+function animatePathFrom(from_id, length){
+    elem = document.getElementById('chain_id_' + from_id);   
+    elem3 = document.getElementById('chain_under_id_' + from_id);
+    elem2 = document.getElementById('path_id_' + from_id);   
     elem.setAttribute('fill', '#00BB00');
+    elem3.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#00BB00');
+    var x = document.getElementById('chain_under_id_' + from_id).getAttribute("x");
+    x = 338-x;
+    var y = document.getElementById('chain_under_id_' + from_id).getAttribute("y");
+    y = 348-y;
+    anime({
+        targets: '#chain_under_id_' + from_id,
+        translateX: x,
+        translateY: y,
+        easing: 'linear',
+        duration: length/2,
+        //direction: 'reverse',
+    });
+    
     anime({
         targets: '#path_id_' + from_id,
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'linear',
         duration: length,
-        direction: 'altdernate',
+        //direction: 'alternate',
         // loop: true
     });
 }
 
-function animatePathTo(to_id, length) {
-    elem = document.getElementById('chain_id_' + to_id);
-    elem2 = document.getElementById('path_id_' + to_id);
-    elem3 = document.getElementById('path_under_id_' + to_id);
+function animatePathTo(to_id, from_id, length){
+    document.getElementById('chain_under_id_' + from_id).setAttribute('fill', 'none');
+    elem = document.getElementById('chain_id_' + to_id); 
+    elem5 = document.getElementById('chain_under_id_' + to_id);  
+    elem2 = document.getElementById('path_id_' + to_id); 
+    elem3 = document.getElementById('path_under_id_' + to_id);     
     elem.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#000000');
     elem3.setAttribute('stroke', '#00BB00');
+    elem5.setAttribute('fill', '#00BB00');
+    var x2 = document.getElementById('chain_under_id_' + to_id).getAttribute("x");
+    x2 = 338-x2;
+    var y2 = document.getElementById('chain_under_id_' + to_id).getAttribute("y");
+    y2 = 348-y2;
+    
+    anime({
+        // delay: 3000,
+        targets: '#chain_under_id_' + to_id,
+        translateX: x2,
+        translateY: y2,
+        easing: 'linear',
+        duration: length/2,
+        direction: 'reverse',
+    });
+
     anime({
         targets: '#path_id_' + to_id,
         strokeDashoffset: [anime.setDashoffset, 0],
@@ -251,8 +317,9 @@ function sendMessage() {
     to_id = document.getElementById('to_chain').value;
     console.log("Animating sending a message from " + from_id + " to " + to_id);
     animatePathFrom(from_id, 4000);
-    animatePathTo(to_id, 4000);
-    setTimeout(() => { generateChains() }, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
+    setTimeout(() => { animatePathTo(to_id, from_id, 4000) }, 2000)
+    // animatePathTo(to_id, 4000);
+    setTimeout(() => { generateChains() }, 8000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
 
@@ -300,7 +367,7 @@ function generateChains() {
     angleBetween = (360 / number) * (Math.PI / 180);
     centerX = 350;
     centerY = 360;
-    offsetX = 150;
+    offsetX = 0; // previously used, no longer to center the SVG in a rectangle, change to 0 because the SVG is just a square now
     text = "";
 
     // build the outer parachain boxes and the paths that lead to the middle
@@ -312,6 +379,7 @@ function generateChains() {
         text += "#/explorer'>";
         text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
         text += "<rect id='innerchain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
+        text += "<rect id='chain_under_id_" + chains_array[i] + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
         text += "</a>\n";
         text += "<path id='path_under_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
         text += "<path id='path_id_" + chains_array[i] + "'d='M" + thisX + " " + thisY + " L" + (offsetX + centerX) + " " + centerY + " Z' stroke='black' stroke-width='2' />\n";
