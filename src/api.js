@@ -26,13 +26,15 @@ export default class API {
                     resolve(`Connected to ${r} at ${uri}`, r, uri);
                 }).catch((e) => { reject(e); });
             }
-            let provider = new WsProvider(uri);
-            ApiPromise.create({ provider }).then((r) => {
-                this.papi = r;
-                this.papi.rpc.system.chain().then((r) => {
-                    resolve(`Connected to ${r} at ${uri}`, r, uri);
+            else{
+                let provider = new WsProvider(uri);
+                ApiPromise.create({ provider }).then((r) => {
+                    this.papi = r;
+                    this.papi.rpc.system.chain().then((r) => {
+                        resolve(`Connected to ${r} at ${uri}`, r, uri);
+                    }).catch((e) => { reject(e); });
                 }).catch((e) => { reject(e); });
-            }).catch((e) => { reject(e); });
+            }
         });
     }
 
