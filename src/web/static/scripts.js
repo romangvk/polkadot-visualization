@@ -36,6 +36,8 @@ function animatePathFrom(from_id, length){
         //direction: 'alternate',
         // loop: true
     });
+    
+    
 }
 
 function animatePathTo(to_id, length){
@@ -46,22 +48,11 @@ function animatePathTo(to_id, length){
     elem.setAttribute('fill', '#00BB00');
     elem2.setAttribute('stroke', '#000000');
     elem3.setAttribute('stroke', '#00BB00');
-    elem5.setAttribute('fill', '#00BB00');
     var x2 = document.getElementById('chain_under_id_' + to_id).getAttribute("x");
     x2 = 489-x2;
     var y2 = document.getElementById('chain_under_id_' + to_id).getAttribute("y");
     y2 = 339-y2;
     
-    anime({
-        delay: 1000,
-        targets: '#chain_under_id_' + to_id,
-        translateX: x2,
-        translateY: y2,
-        easing: 'linear',
-        duration: length/2,
-        direction: 'reverse',
-        delay: 2000,
-    });
 
     anime({
         targets: '#path_id_' + to_id,
@@ -71,6 +62,32 @@ function animatePathTo(to_id, length){
         direction: 'reverse',
         // loop: true
     });
+    
+}
+
+function animateBoxTo(to_id, from_id, length){
+    elem = document.getElementById('chain_id_' + to_id); 
+    elem5 = document.getElementById('chain_under_id_' + to_id);
+    elem6 = document.getElementById('chain_under_id_' + from_id);  
+    elem2 = document.getElementById('path_id_' + to_id); 
+    elem3 = document.getElementById('path_under_id_' + to_id); 
+    elem5.setAttribute('fill', '#00BB00');    
+    elem6.setAttribute('fill', 'none');
+    var x2 = document.getElementById('chain_under_id_' + to_id).getAttribute("x");
+    x2 = 489-x2;
+    var y2 = document.getElementById('chain_under_id_' + to_id).getAttribute("y");
+    y2 = 339-y2;
+    
+    anime({
+        targets: '#chain_under_id_' + to_id,
+        translateX: x2,
+        translateY: y2,
+        easing: 'linear',
+        duration: length/2,
+        direction: 'reverse',
+    });
+
+    
 }
 
 
@@ -82,6 +99,7 @@ function sendMessage() {
     animatePathFrom(from_id, 4000);
     //changeColor(to_id);
     animatePathTo(to_id, 4000);
+    setTimeout(() => {animateBoxTo(to_id, from_id, 4000)}, 2000);
     setTimeout(() => {generateChains()}, 4000); //reset the paths after a message is sent... Not really sure why 4000 is the delay, I feel like it should be 8000 but idk
 }
 
@@ -121,9 +139,13 @@ function generateChains(){
 
 function showNewBlock(){
     console.log("animating the bottom left circle");
+    elem = document.getElementById('chain_id_' + 1); 
+    elem2 = document.getElementById('chain_under_id_' + 1);
+    elem.setAttribute('fill', '#E6007A');
+    elem2.setAttribute('fill', '#E6007A');
     anime({
-        targets: '#block_svg #left_circle',
-        scale: 1.25,
+        targets: '#chain_id_' + 1,
+        scale: 1.01,
         duration: 500,
         direction: 'alternate',
     })
