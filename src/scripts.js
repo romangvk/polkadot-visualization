@@ -335,26 +335,32 @@ function changeColor(chain) {
 
 
 // Hard coded URLs for each of the parachains.. Not really a better way to do this because the URLs aren't named with any real consistency
-parachain_id_to_url = {    100: 'tick-rpc.polkadot.io',
-                            110: 'trick-rpc.polkadot.io',
-                            120: 'track-rpc.polkadot.io',
-                            1000: 'rpc.parachain.plasmnet',
-                            3000: 'parachain-rpc.robonomics.network',
-                            5000: 'rococo-1.acala.laminar.one',
-                            5001: 'rococo-1.laminar-chain.laminar.one',
-                            8000: 'parachain-rpc.darwinia.network'
-                        }
+parachain_id_to_url = {
+    100: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftick-rpc.polkadot.io#/explorer'>",
+    110: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftrick-rpc.polkadot.io#/explorer'>",
+    120: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftrack-rpc.polkadot.io#/explorer'>",
+    200: "<a href='https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9944#/parachains/200'>",
+    300: "<a href='https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9944#/parachains/300'>",
+    1000: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.parachain.plasmnet#/explorer'>",
+    3000: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fparachain-rpc.robonomics.network#/explorer'>",
+    5000: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frococo-1.acala.laminar.one#/explorer'>",
+    5001: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frococo-1.laminar-chain.laminar.one#/explorer'>",
+    8000: "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fparachain-rpc.darwinia.network#/explorer'>"
+}
 
 // There might be a way to get these from the Network, but it would require the URLs above anyway, so we might as well just hardcode these too
-parachain_id_to_name = {    100: 'Tick',
-                            110: 'Trick',
-                            120: 'Track',
-                            1000: 'Plasm',
-                            3000: 'Robonomics',
-                            5000: 'Mandala',
-                            5001: 'Turbulence',
-                            8000: 'Darwinia'
-                        }
+parachain_id_to_name = {    
+    100: 'Tick',
+    110: 'Trick',
+    120: 'Track',
+    200: 'Test Chain 1',
+    300: 'Test Chain 2',
+    1000: 'Plasm',
+    3000: 'Robonomics',
+    5000: 'Mandala',
+    5001: 'Turbulence',
+    8000: 'Darwinia'
+}
 
 
 // This generates the image on the webpage of the network
@@ -374,9 +380,9 @@ function generateChains() {
     for (var i = 0; i < number; i++) {
         thisX = offsetX + centerX + Math.cos(angleBetween * i) * (centerX * .8);
         thisY = centerY + Math.sin(angleBetween * i) * (centerX * .8);
-        text += "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2F";
+        // text += "<a href='https://polkadot.js.org/apps/?rpc=wss%3A%2F%2F";
         text += parachain_id_to_url[chains_array[i]];
-        text += "#/explorer'>";
+        // text += "#/explorer'>";
         text += "<rect id='chain_id_" + chains_array[i] + "' x='" + (thisX - 30) + "' y='" + (thisY - 30) + "' rx='10' ry='10' width='60' height='60' stroke='black' stroke-width='0' fill='#BBBBBB' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
         text += "<rect id='innerchain_id_" + chains_array[i] + "' x='" + (thisX - 12) + "' y='" + (thisY - 12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";
         text += "<rect id='chain_under_id_" + chains_array[i] + "' x='" + (thisX-12) + "' y='" + (thisY-12) + "' rx='5' ry='5' width='24' height='24' fill='#FFFFFF' transform='rotate(" + (360/num_chains)*i + ", " + (thisX) + ", " + (thisY) + " )' />\n";

@@ -3,8 +3,8 @@ const{ ApiPromise, WsProvider } = require('@polkadot/api');
 
 
 async function main() {
-    // const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
     const provider = new WsProvider('wss://rococo-rpc.polkadot.io/');
+    // const provider = new WsProvider('wss://kusama-rpc.polkadot.io/');
     const api = await ApiPromise.create({ provider });
     const chain = await api.rpc.system.chain();
     console.log(`Connected to ${chain}!`);
